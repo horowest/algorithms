@@ -13,8 +13,15 @@ void create_set(vector<int>& arr, int n) {
 }
 
 int find(int x) {
-    while(x != parent[x])
+    vector<int> nodes;
+    // parent lookup
+    while(x != parent[x]) {
+        nodes.push_back(x);
         x = parent[x];
+    }
+    // path compression
+    for(int node: nodes) 
+        parent[node] = x;
     return x;
 }
 
@@ -25,7 +32,7 @@ bool same(int x, int y) {
 
 void union_(int x, int y) {
     int s1 = find(x), s2 = find(y);
-
+    // find the deeper subtree
     if(rank_[s1] > rank_[s2]) {
         parent[s2] = s1;
     }
@@ -43,8 +50,9 @@ int main() {
     vector<int> arr;
     for(int i = 1; i <= n; i++)
         arr.push_back(i);
+    // init
     create_set(arr, n);
-
+    
     // union
     while(m--) {
         cin >> a >> b;
